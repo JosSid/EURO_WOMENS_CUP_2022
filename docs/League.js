@@ -52,6 +52,9 @@ export default class League {
 
         //Setear los equipos locales
         this.setLocalTeams()
+
+        //Setear los equipos visitantes
+        this.setAwayTeams()
         
     }
 
@@ -97,6 +100,29 @@ export default class League {
         })
     }
     
+    setAwayTeams() {
+        //Array de strings con los nombres de los equipos
+        let teamNames = this.teams.map(function(value){
+            return value.name
+        })
+
+        let teamIndexMaxValue = this.teams.length -1 -1
+        let teamIndex = teamIndexMaxValue
+        //para cada jornada
+        this.matchDaySchedule.forEach(matchDay => {
+            matchDay.forEach((match, indexMatch) => {
+                if (indexMatch === 0) {
+                    match.away = teamNames[teamNames.length -1]
+                } else {
+                    match.away = teamNames[teamIndex]
+                    teamIndex--
+                }
+                if (teamIndex < 0) {
+                    teamIndex = teamIndexMaxValue
+                }
+            })
+        })
+    }
 }
 
 
