@@ -1,11 +1,6 @@
 
 //*TODO: Mostrar los equipos inscritos por pantalla.
-const teams = [
-    'ALbalat',
-    'Polinya',
-    'Benicull',
-    'Corbera'
-]
+
 
 
 
@@ -14,7 +9,7 @@ const teams = [
 //Un partido es el enfrentamiento entre dos equipos
 //El desarrollo de un partido generará un resultado
 
-class League {
+export default class League {
     constructor(name, teams, config = {}) {
         this.name = name
         this.setupTeams(teams)
@@ -51,8 +46,7 @@ class League {
     }
 }
 
-const groupA = new League('Group A', teams)
-console.log(groupA.teams)
+
 
 //*TODO: Crear la planificación de jornadas y partidos de cada jornada.
 
