@@ -20,13 +20,13 @@ export default class League {
         
     }
 
-    setup(config = {}) {
+    setup(config = {}) { //Le pasamos una configuracion por defecto 
         const defaultConfig = {
             pointsPerWin : 3,
             pointsPerDraw : 1,
             pointsPerLose : 0
         }
-        this.config = Object.assign(defaultConfig, config)
+        this.config = Object.assign(defaultConfig, config) //Si nos llega algo nuevo lo sobreescribiremos al objeto de configuración
     }
 
     setupTeams(teams) {
@@ -43,6 +43,24 @@ export default class League {
             }
             this.teams.push(teamObj)
         }
+    }
+
+    scheduleCreation() {
+        this.scheduleMatches = [];//Array donde se almacenaran las diferentes jornadas del grupo
+        const numMatchesDay = this.teams.length - 1; //El número de jornadas es == al numero de equipos de cada grupo - 1
+        const numMatchesForMatchDay = this.teams.length / 2;//El numero de partidos por jornada es == al total de equipos / 2
+
+        for (let i = 0; i < numMatchesDay; i++) {
+            //Para cada partido de la jornada
+            const matchDay = []; //Array donde se almacenara cada jornada y despues la subiremos al array del calendario
+            for (let j = 0; j < numMatchesForMatchDay; j++) {
+              //Registrar el partido en la planificacion
+              //Un partido es el enfrentamiento entre dos equipos
+              const match = { home: "home", away: "away" };
+              matchDay.push(match);
+            }
+            this.scheduleMatches.push(matchDay);
+          }
     }
 }
 

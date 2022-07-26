@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "indexleague",
-            "program": "${workspaceFolder}/league.js",
+            "program": "${workspaceFolder}/index.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
