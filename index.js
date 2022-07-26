@@ -9,4 +9,5 @@ const groupBLeague = new League('Group B', groupB)
 const groupCLeague = new League('Group C', groupC)
 const groupDLeague = new League('Group D', groupD)
 
-presentationGroups()
+groupALeague.scheduleMatchDays();
+

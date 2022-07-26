@@ -45,23 +45,58 @@ export default class League {
         }
     }
 
-    scheduleCreation() {
-        this.scheduleMatches = [];//Array donde se almacenaran las diferentes jornadas del grupo
-        const numMatchesDay = this.teams.length - 1; //El número de jornadas es == al numero de equipos de cada grupo - 1
-        const numMatchesForMatchDay = this.teams.length / 2;//El numero de partidos por jornada es == al total de equipos / 2
+    scheduleMatchDays() {
+        
+        //Inicializamos la planificación
+        this.initSchedule()
 
-        for (let i = 0; i < numMatchesDay; i++) {
-            //Para cada partido de la jornada
-            const matchDay = []; //Array donde se almacenara cada jornada y despues la subiremos al array del calendario
-            for (let j = 0; j < numMatchesForMatchDay; j++) {
-              //Registrar el partido en la planificacion
-              //Un partido es el enfrentamiento entre dos equipos
-              const match = { home: "home", away: "away" };
-              matchDay.push(match);
-            }
-            this.scheduleMatches.push(matchDay);
-          }
+        //Setear los equipos locales
+        this.setLocalTeams()
+        
     }
+
+    initSchedule() {
+
+        this.matchDaySchedule = []
+        const numberOfMatchDays = this.teams.length - 1 //Numero de jornadas
+        const numberOfMatchesPerDay = this.teams.length / 2 //Numero de partidos por jornada
+
+        //Para cada jornada
+        for ( let i = 0; i < numberOfMatchDays; i++ ) {
+            //Para cada partido
+            const matchDay = []
+            for(let j = 0; j < numberOfMatchesPerDay; j++) {
+                //Registtrar el partido en la planificación
+                //Un partido es el enfrentamiento entre dos equipos
+                const match = {home: 'home', away: 'away'}
+                matchDay.push(match)
+            }
+            //añadir la jornada creada al array de jornadas
+            this.matchDaySchedule.push(matchDay)
+        }
+    }
+
+    setLocalTeams() {
+        //Para cada jornada
+        let teamIndex = 0
+        let teamIndexMaxValue = this.teams.length -1 -1
+
+        //Array de strings con los nombres de los equipos
+        let teamNames = this.teams.map(function(value){
+            return value.name
+        })
+
+        this.matchDaySchedule.forEach(matchDay => {
+            matchDay.forEach(match => {
+                match.home = teamNames[teamIndex]
+                teamIndex++
+                if (teamIndex > teamIndexMaxValue) {
+                    teamIndex = 0
+                }
+            })
+        })
+    }
+    
 }
 
 

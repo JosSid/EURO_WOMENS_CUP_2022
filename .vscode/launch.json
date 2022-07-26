@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "LeagueLeague",
+            "program": "${workspaceFolder}/League.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
             "name": "indexleague",
             "program": "${workspaceFolder}/index.js",
             "request": "launch",
