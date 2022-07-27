@@ -35,6 +35,10 @@ export function presentationGroups() {
     console.log(`- ${teamsGroups[i][2]} VS ${teamsGroups[i][0]}`)
     console.log('')
   }
+
+  console.log('*************************************************')
+  console.log('************START GROUPS LEAGUES*****************')
+  console.log('*************************************************')
 }
 
 export const titlesGroups = ['GROUP A', 'GROUP B', 'GROUP C', 'GROUP D']
