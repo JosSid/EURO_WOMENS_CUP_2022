@@ -17,6 +17,7 @@ export default class League {
         this.matches = []// Partidos
         this.matchDaySchedule = [] //Planificación de jornadas
         this.scores = [] // Clasificación
+        this.summaries = []//Nos sirve para almacenar los resultados de cada jornada y la clasificacion al finalizar la jornada
         
     }
 
@@ -55,6 +56,8 @@ export default class League {
 
         //Setear los equipos visitantes
         this.setAwayTeams()
+
+        return this.matchDaySchedule
         
     }
 
@@ -123,14 +126,113 @@ export default class League {
             })
         })
     }
+
+    start() {
+        
+        //Para cada Jornada
+        for(const matchDay of this.matchDaySchedule) {
+            //matchDaySummary nos sirve para almacenar el resultado y la clasificacion de cada jornada
+            const matchDaySummary = {
+                results: [],
+                standings: undefined
+            }
+            //Para cada partido de cada jornada
+            for ( const match of matchDay) {
+                //Jugar el partido
+                const result = this.play(match)
+                this.updateTeams(result)
+
+                matchDaySummary.results.push(result)
+            }
+
+            // Rehacemos la clasificacion
+            let standings = this.getStandings()
+            //hacemos una copia de los equipos en esta jornada para almacenarlo en la clasificacion de la propia jornada
+            matchDaySummary.standings = standings.map(team => Object.assign({},team))//Tenemos que devolver una copia nueva del objeto para romper lasd referencias 
+            //añadimos los datos de la jornada al array de datos de la jornada
+            this.summaries.push(matchDaySummary)
+        }
+    }
+
+    play(match) {
+        const homeGoals = this.generateGoals()
+        const awayGoals = this.generateGoals()
+
+        return {
+            homeTeamName: match.home,
+            homeGoals,
+            awayTeamName: match.away,
+            awayGoals
+        }
+    }
+
+    generateGoals(max = 7) {
+        return Math.floor(Math.random() * max)
+    }
+
+    updateTeams(result) {
+        const homeTeam = this.teams.find(team => team.name === result.homeTeamName)//Encuentra el equipo cuyo nombre sea el del equipo local
+        const awayTeam = this.teams.find(team => team.name === result.awayTeamName)//Encuentra el equipo cuyo nombre sea el del equipo visitante
+        homeTeam.goalsFor += result.homeGoals
+        homeTeam.goalsAgainst += result.awayGoals
+        awayTeam.goalsFor += result.awayGoals
+        awayTeam.goalsAgainst += result.homeGoals
+        //Reglas del futbol
+        if (result.homeGoals > result.awayGoals) {
+            homeTeam.points += this.config.pointsPerWin
+            homeTeam.matchesWon++
+            
+            awayTeam.points += this.config.pointsPerLose
+            awayTeam.matchesLost++
+            
+        } else if (result.homeGoals < result.awayGoals) {
+            homeTeam.points += this.config.pointsPerLose
+            homeTeam.matchesLost++
+            
+            awayTeam.points += this.config.pointsPerWin
+            awayTeam.matchesWon++
+        } else {
+            homeTeam.points += this.config.pointsPerDraw
+            homeTeam.matchesDraw++
+            
+            awayTeam.points += this.config.pointsPerDraw
+            awayTeam.matchesDraw++
+        }
+
+
+        
+    }
+    
+    getStandings() {
+        const standings = this.teams.sort(function(teamA, teamB){
+            if ( teamA.points > teamB.points) {
+                return -1
+            } else if ( teamB.points > teamA.points) {
+                return 1
+            } else {
+                //empate a puntos
+                const diffGoalsTeamA = teamA.goalsFor - teamA.goalsAgainst
+                const diffGoalsTeamB = teamB.goalsFor - teamB.goalsAgainst
+
+                if (diffGoalsTeamA > diffGoalsTeamB) {
+                    return -1
+                } else if (diffGoalsTeamB > diffGoalsTeamA){
+                    return 1
+                } else {
+                    return 0
+                }
+            }
+        })
+        return standings
+    }
 }
 
 
 
-//*TODO: Crear la planificación de jornadas y partidos de cada jornada.
+//*DONE: Crear la planificación de jornadas y partidos de cada jornada.
 
-//*TODO: Mostrarla por pantalla.
-//*TODO: Jugar lo partidos de todas las jornadas.
+//*DONE: Mostrarla por pantalla.
+//*DONE: Jugar lo partidos de todas las jornadas.
 //Una vez terminada cada jornada, se deberá mostrar cómo queda la clasificación de la misma.
 //*TODO: Una vez terminada la liga, se mostrarán estadísticas de número de goles totales y total de puntos ganados.
  
