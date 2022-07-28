@@ -14,9 +14,7 @@ export default class League {
         this.name = name
         this.setupTeams(teams)
         this.setup(config)//Setup con la configuracion por defecto
-        this.matches = []// Partidos
         this.matchDaySchedule = [] //Planificación de jornadas
-        this.scores = [] // Clasificación
         this.summaries = []//Nos sirve para almacenar los resultados de cada jornada y la clasificacion al finalizar la jornada
         
     }
